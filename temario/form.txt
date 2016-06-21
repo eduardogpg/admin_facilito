@@ -1,0 +1,14 @@
+ your_name = forms.CharField(label='Your name', max_length=100)
+
+tenemos:
+	CharField
+	URLField
+	ChoiceField
+
+ class Login(forms.Form):
+
+	username = forms.CharField(max_length = 20,
+		widget=forms.TextInput(attrs={'id': 'username', 'class': 'validate'}))
+
+	password = forms.CharField( max_length = 20,
+		widget=forms.PasswordInput(attrs={'id': 'password', 'class': 'validate'}))			
