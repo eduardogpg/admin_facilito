@@ -53,9 +53,22 @@ def logout(request):
 
 
 def create(request):
-	form = CreateUserForm()
+	message = None
+
+	form = CreateUserForm(request.POST or None)
+	if request.method =='POST':
+		if form.is_valid():
+			user = form.save( commit = False )
+			password = user.password #Este en texto plano
+			user.set_password(password)
+			user.save()
+			return redirect('client:login')
+		else:
+			message = "Formulario no valido"
+
 	context = {
-		'form' :  form
+		'form':  form,
+		'message' : message
 	}
 	return render( request, 'create.html', context )
 
