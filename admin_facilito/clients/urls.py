@@ -4,13 +4,11 @@ from . import views
 app_name = 'client'
 
 urlpatterns = [
-    url(r'^show/$', views.Show.as_view(), name='show'),
-    
-    url(r'^show/$', views.Show.as_view(), name='show'),#vamos a necesitar un parametro
+    #url(r'^show/(?P<pk>\d+)/$', views.ShowView.as_view(), name = 'show'),
+    url(r'^show/(?P<username_url>\w+)/$', views.ShowView.as_view(), name = 'show'),
+    url(r'^login/$', views.LoginView.as_view(), name = 'login'),
+    url(r'^logout/$', views.logout, name = 'logout'),
+    url(r'^dashboard/$', views.DashboardView.as_view(), name = 'dashboard'),
+    url(r'^create/$', views.create, name = 'create'),
+   ]
 
-    url(r'^login/$', views.Login.as_view(), name='login'),
-    url(r'^logout/$', views.logout, name='logout'),
-    url(r'^dashboard/$', views.Dashboard.as_view(), name='dashboard'),
-    url(r'^create/$', views.create, name='create'),
-    url(r'^ver/(?P<username_slug>\w+)/$', views.Ver.as_view(), name="ver"),
-]
