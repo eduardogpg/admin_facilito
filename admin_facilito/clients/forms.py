@@ -11,7 +11,8 @@ class CreateUserForm(forms.ModelForm):
 	username = forms.CharField( max_length = 20,
 			error_messages = {
 				'required': 'El username es requerido',
-				'unique' : 'El usuario ya se encuentra registrado'
+				'unique' : 'El username ya se encuentra registrado',
+				'invalid' : 'El username no es valido'
 			}
 	 )
 

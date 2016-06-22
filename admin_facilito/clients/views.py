@@ -3,6 +3,8 @@ from django.shortcuts import redirect
 
 from django.http import HttpResponse
 
+from django.contrib.auth.models import User
+
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth import logout as logout_django
@@ -15,7 +17,7 @@ from forms import CreateUserForm
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
-from django.views.generic import View
+from django.views.generic import View,DetailView
 
 #decoradores
 def user_authenticated(user):
@@ -24,6 +26,17 @@ def user_authenticated(user):
 # Create your views here.
 def show_(request):
 	return HttpResponse("Hola Mundo desde el cliente")
+
+#https://docs.djangoproject.com/en/dev/topics/class-based-views/generic-display/#dynamic-filtering
+#http://stackoverflow.com/questions/19407239/generic-detail-view-must-be-called-with-either-an-object-pk-or-a-slug
+#http://stackoverflow.com/questions/31947764/passing-pk-or-slug-to-generic-detailview-in-django
+#El de arriba
+class Ver(DetailView):
+	model = User
+	template_name = 'show.html'
+	slug_field = 'username'
+	slug_url_kwarg = 'username_slug'
+
 
 class Show(TemplateView):
 	template_name = "show.html"
