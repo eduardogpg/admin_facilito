@@ -32,3 +32,6 @@ class UserCreateForm(UserCreationForm):
 
 
         Si es buen lider, sabra como sobrellevar a los programadores, se supone que el buscara a los que saben y los dejara hacer lo que ellos saben hacer
+
+
+    def clean_valor(self):

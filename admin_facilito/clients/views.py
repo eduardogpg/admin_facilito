@@ -18,7 +18,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic import View
 from django.views.generic import DetailView
+from django.views.generic import CreateView
+from django.views.generic import DeleteView
 
+
+from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponseRedirect
 
 class ShowView(DetailView):
 	model = User
@@ -59,15 +64,37 @@ class DashboardView(LoginRequiredMixin, View):
 		return render( request, 'dashboard.html', {})
 
 
-@login_required( login_url = 'client:login' )
+@login_required(login_url = 'client:login' )
 def logout(request):
 	logout_django(request)
 	return redirect('client:login')
 
+class Create(CreateView):
+	template_name = "create.html"
+	success_url = reverse_lazy("client:login")
+	form_class = CreateUserForm
+	model = User
+	
+	# This method is called when valid form data has been POSTed.
+	# It should return an HttpResponse.
+	def form_valid(self, form):
+		self.object = form.save(commit=False)
+		self.object.set_password(self.object.password)
+		self.object.save()
+		return HttpResponseRedirect(self.get_success_url())
 
-def create(request):
+class Delete(LoginRequiredMixin, DeleteView):
+		login_url = 'client:login'
+		template_name = "delete.html"
+		slug_field = 'username'
+		slug_url_kwarg = 'username_url'
+	 	model = User
+		success_url = reverse_lazy("client:login")
+
+
+def creates(request):
+	#queryset = Poll.active.order_by('-pub_date')[:5]
 	message = None
-
 	form = CreateUserForm(request.POST or None)
 	if request.method == 'POST':
 		if form.is_valid():
