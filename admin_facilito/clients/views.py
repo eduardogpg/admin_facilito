@@ -27,6 +27,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 """
 Class
@@ -79,12 +81,17 @@ class CreateClass(CreateView):
 		self.object.save()
 		return HttpResponseRedirect( self.get_success_url() ) 
 
-class EditClass(LoginRequiredMixin, UpdateView):
+class EditClass(LoginRequiredMixin, UpdateView,SuccessMessageMixin):
 	login_url = 'client:login'
 	model = User
 	template_name = 'edit.html'
-	success_url = reverse_lazy('client:dashboard')
+	success_url = reverse_lazy('client:edit')
 	form_class = EditUserForm
+	success_message = "Tu usuarios ha sido actualizado exitosamente"
+
+	def form_valid(self, request, *args, **kwargs):
+		messages.success(self.request, self.success_message)
+		return super(EditClass, self).form_valid(request, *args, **kwargs)
 
 	def get_object(self, queryset = None):
 		return self.request.user
@@ -94,7 +101,6 @@ Functions
 """
 @login_required( login_url = 'client:login' )
 def edit_password(request):
-	message = None
 	form = EditPasswordForm(request.POST or None)
 	if request.method == 'POST':
 		if form.is_valid():
@@ -106,10 +112,12 @@ def edit_password(request):
 				request.user.save()
 
 				update_session_auth_hash( request, request.user )
-				message = "password actualizado"
+				messages.success(request, 'El password ha sido actualizado')
+			else:
+				messages.error(request, 'El password no es el correcta')
 
 
-	context = {'form' : form, 'message' : message}
+	context = {'form' : form}
 	return render(request, 'edit_password.html', context)
 
 @login_required( login_url = 'client:login' )
