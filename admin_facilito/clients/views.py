@@ -6,25 +6,31 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
 from django.contrib.auth import authenticate
-from django.contrib.auth import login
-from django.contrib.auth import logout
+from django.contrib.auth import login as login_django
+from django.contrib.auth import logout as logout_django
+from django.contrib.auth import update_session_auth_hash
 
 from django.contrib.auth.decorators import login_required
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from forms import LoginUserForm
+from forms import CreateUserForm
+from forms import EditUserForm
+from forms import EditPasswordForm
+
 from django.views.generic import TemplateView
 from django.views.generic import View
 from django.views.generic import DetailView
 from django.views.generic import CreateView
-from django.views.generic import DeleteView
 from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse_lazy
 
-from forms import LoginForm
-from forms import CreateUserForm
-from forms import EditUserForm
+
+"""
+Class
+"""
 
 class ShowClass(DetailView):
 	model = User
@@ -32,11 +38,8 @@ class ShowClass(DetailView):
 	slug_field = 'username'
 	slug_url_kwarg = 'username_url'
 
-class ShowUser(TemplateView):
-	template_name = "show.html"
-
 class LoginClass(View):
-	form = LoginForm()
+	form = LoginUserForm()
 	message = None
 	template = 'login.html'
 
@@ -50,7 +53,7 @@ class LoginClass(View):
 		password_post = request.POST['password']
 		user = authenticate( username = username_post , password = password_post)
 		if user is not None:
-			login( request, user)
+			login_django( request, user)
 			return redirect('client:dashboard')
 		else:
 			self.message = "Username o password incorrectos"
@@ -64,74 +67,55 @@ class DashboardClass(LoginRequiredMixin, View):
 	def get(self, request, *args, **kwargs):
 		return render( request, 'dashboard.html', {})
 
-
-@login_required(login_url = 'client:login' )
-def logout_function(request):
-	logout(request)
-	return redirect('client:login')
-
 class CreateClass(CreateView):
-	template_name = "create.html"
-	success_url = reverse_lazy("client:login")
+	success_url =  reverse_lazy('client:login')
+	template_name = 'create.html'
+	model = User
 	form_class = CreateUserForm
-	model = User
-	
-	# This method is called when valid form data has been POSTed.
-	# It should return an HttpResponse.
+
 	def form_valid(self, form):
-		self.object = form.save(commit=False)
-		self.object.set_password(self.object.password)
+		self.object = form.save(commit = False)
+		self.object.set_password ( self.object.password)
 		self.object.save()
-		return HttpResponseRedirect(self.get_success_url())
+		return HttpResponseRedirect( self.get_success_url() ) 
 
-class DeleteClass(LoginRequiredMixin, DeleteView):
-		login_url = 'client:login'
-		template_name = "delete.html"
-		slug_field = 'username'
-		slug_url_kwarg = 'username_url'
-	 	model = User
-		success_url = reverse_lazy("client:login")
-
-#http://stackoverflow.com/questions/15497693/django-can-class-based-views-accept-two-forms-at-a-time
-class _Update(UpdateView):
+class EditClass(LoginRequiredMixin, UpdateView):
+	login_url = 'client:login'
 	model = User
+	template_name = 'edit.html'
+	success_url = reverse_lazy('client:dashboard')
 	form_class = EditUserForm
-	template_name_suffix = 'update.html'
-	template_name = "update.html"
-	slug_field = 'username'
-	slug_url_kwarg = 'username_url'
-	success_url = reverse_lazy("client:edit", kwargs={'username_url': 'eduardo'})
 
-class UpdateClass(UpdateView):
-	form_class = EditUserForm
-	template_name = "update.html"
-	success_url = reverse_lazy("client:edit")
-
-	#get object
-	def get_object(self, queryset=None): 
+	def get_object(self, queryset = None):
 		return self.request.user
 
-def creates(request):
-	#queryset = Poll.active.order_by('-pub_date')[:5]
+"""
+Functions
+"""
+@login_required( login_url = 'client:login' )
+def edit_password(request):
 	message = None
-	form = CreateUserForm(request.POST or None)
+	form = EditPasswordForm(request.POST or None)
 	if request.method == 'POST':
 		if form.is_valid():
-			user = form.save( commit = False )
-			user.set_password( user.password )
-			user.save()
-			return redirect('client:login')
-	context = {
-		'form' : form
-	}
-	return render( request, 'create.html', context)
+			current_password = form.cleaned_data['password']
+			new_password = form.cleaned_data['new_password']
+
+			if authenticate(username = request.user.username, password = current_password):
+				request.user.set_password(  new_password )
+				request.user.save()
+
+				update_session_auth_hash( request, request.user )
+				message = "password actualizado"
 
 
+	context = {'form' : form, 'message' : message}
+	return render(request, 'edit_password.html', context)
 
-
-
-
-
+@login_required( login_url = 'client:login' )
+def logout(request):
+	logout_django(request)
+	return redirect('client:login')
 
 
 
