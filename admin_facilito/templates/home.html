@@ -1,3 +1,5 @@
+{% load staticfiles %}
+
 <html>
 <head>
 	<title> Home </title>
@@ -7,11 +9,14 @@
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
      
+   <link rel="stylesheet" type="text/css" href="{% static 'client.css' %}" /> 
 
 </head>
 <body>
 
-	<h3 class="#558b2f light-green darken-3">Bienvenidos</h3>
+	<h4 class="#558b2f light-green darken-3">Bienvenidos</h4>
+	<h3> Color azul </h3>
+	<img src="{% static 'img/test.png' %}" alt="My image"/>
 
 </body>
 </html>
