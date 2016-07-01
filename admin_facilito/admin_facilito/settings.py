@@ -56,8 +56,8 @@ ROOT_URLCONF = 'admin_facilito.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': ['templates'],
+        'APP_DIRS': True, #Dejar en true debido al administrador
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
