@@ -18,9 +18,11 @@ from django.conf.urls import url
 from django.conf.urls import include
 
 from .views import home
+from .views import error_404
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^client/', include('clients.urls')),
     url(r'^$', home, name = "home"),
 ]
+handler404 = error_404

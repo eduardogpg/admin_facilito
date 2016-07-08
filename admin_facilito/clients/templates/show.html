@@ -1,2 +1,7 @@
-<h3>Hola Usuario {{ user.username }}  </h3>
+<h3>Hola Usuario  {# user.username #}  </h3>
+
+<h3>Hola Usuario  {{ user.username|title }}  </h3>
+
+<h3>Hola Usuario  {{ user.username|truncatechars:7 }}  </h3>
+
 

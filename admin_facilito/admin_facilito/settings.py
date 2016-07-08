@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'xidf261)2*77p_*ziz8ngtu69-77y000vw6q+t=z=70a0&ulux'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.example.com', 'localhost']
 
 
 # Application definition
@@ -125,7 +125,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static") ]
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, "asset") ]
 
 
 
