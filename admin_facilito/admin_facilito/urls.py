@@ -20,9 +20,13 @@ from django.conf.urls import include
 from .views import home
 from .views import error_404
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^client/', include('clients.urls')),
     url(r'^$', home, name = "home"),
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 handler404 = error_404
