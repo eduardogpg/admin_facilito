@@ -1,16 +1,27 @@
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'client.css' %}" /> 
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+</head>
+<body>
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'client.css' %}" /> 
+	<h3>Login</h3>
 
-<h3>Login</h3>
+	{%  if message %}	
+		<p> {{ message }} </p>
+	{% endif %}
 
-{%  if message %}	
-	<p> {{ message }} </p>
-{% endif %}
+	<form method="post" action="">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="ingreso">
+	</form>
 
-<form method="post" action="">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="ingreso">
-</form>
+	<a href="{% url 'client:create'  %}">registrate</a>
+	<a href="#">olvidaste tu contraseña</a>
 
-<a href="{% url 'client:create'  %}">Registrate</a>
+</body>
+</html>
+
+
