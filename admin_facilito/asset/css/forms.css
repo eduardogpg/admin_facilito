@@ -16,6 +16,16 @@
   box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
 }
 
+footer { 
+  text-align: center; 
+}
+
+footer p {
+  color: #888;
+  font-size: 12px;
+}
+
+
  .input-field label {
    color: #ACACAC;
  }
@@ -24,7 +34,7 @@
     color: #ACACAC;
  }
 
-.input-field input[type=password]:focus + label {
+.input-field .valid input[type=password]:focus + label {
   color: #ACACAC;
 }
 
@@ -32,10 +42,9 @@
   color: #ACACAC;
 }
 
- .input-field input[type=textarea]:focus + label  {
-    color: #ACACAC;
- }
-
+.input-field input[type=textarea]:focus + label  {
+  color: #ACACAC;
+}
 
 .input-field input[type=text]:focus {
    border-bottom: 1px solid #ACACAC;
@@ -66,13 +75,3 @@
    border-bottom: 1px solid #858585;
    box-shadow: 0 1px 0 0 #858585;
  }
-
- 
- footer { 
-  text-align: center; 
- }
-
- footer p {
-  color: #888;
-  font-size: 12px;
-}

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django import forms
 from django.contrib.auth.models import User
 
@@ -14,20 +17,23 @@ Functions
 """
 def must_be_gt(value_password):
 	if len(value_password) < 2:
-		raise forms.ValidationError('El password debe contener por lo menos 5 caracteres, desde una func')
+		raise forms.ValidationError('El password debe contener por lo menos 5 caracteres.')
 
 """
 Class
 """
 
 class LoginUserForm(forms.Form):
-	username = forms.CharField( max_length = 20)
-	password = forms.CharField( max_length = 20, widget = forms.PasswordInput() )
+	username = forms.CharField( max_length = 20, 
+															widget=forms.TextInput(attrs={'id': 'login_username', 'class': 'validate' }))
+
+	password = forms.CharField( max_length = 20, label = 'Contraseña', 
+															widget = forms.PasswordInput(attrs={'id': 'login_password', 'class': 'validate' }) )
 
 class CreateUserForm(forms.ModelForm):
 	username = forms.CharField( max_length = 20,  error_messages =  ERROR_MESSAGE_USER  )
-	password = forms.CharField( max_length = 20, widget = forms.PasswordInput(), error_messages =  ERROR_MESSAGE_PASSWORD  )
-	email = forms.CharField( error_messages =  ERROR_MESSAGE_EMAIL  )
+	password = forms.CharField( max_length = 20, widget = forms.PasswordInput(), error_messages =  ERROR_MESSAGE_PASSWORD, label = 'Contraseña'  )
+	email = forms.CharField( error_messages =  ERROR_MESSAGE_EMAIL )
 
 	class Meta:
 		model = User
@@ -43,8 +49,8 @@ class EditUserForm(forms.ModelForm):
 
 class EditPasswordForm(forms.Form):
 	password = forms.CharField( max_length = 20, widget = forms.PasswordInput() )
-	new_password = forms.CharField( max_length = 20, widget = forms.PasswordInput(), validators = [must_be_gt]  )
-	repeat_password = forms.CharField( max_length = 20, widget = forms.PasswordInput(),  validators = [must_be_gt])
+	new_password = forms.CharField( max_length = 20, label = "Nueva password" , widget = forms.PasswordInput(), validators = [must_be_gt] )
+	repeat_password = forms.CharField( max_length = 20, label = "Repetir nueva password", widget = forms.PasswordInput(),  validators = [must_be_gt] )
 
 
 	def clean(self):
@@ -53,7 +59,7 @@ class EditPasswordForm(forms.Form):
 		password2 = clean_data.get('repeat_password')
 
 		if password1 != password2:
-			raise forms.ValidationError('Los password no son los mismos')
+			raise forms.ValidationError('Los password no coinciden')
 
 
 
