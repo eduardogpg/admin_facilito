@@ -1,0 +1,19 @@
+{% load staticfiles %}
+<!DOCTYPE htlm>
+<html>
+<head>
+	<meta charset="UTF-8">
+	
+	<title> {% block title %} {% endblock %} </title>
+
+   {% block scripts %} {% endblock %} 
+
+</head>
+<body>
+
+	{% block content %} {% endblock %} 
+	
+	{% block footer %} {% endblock %} 
+
+</body>
+</html>

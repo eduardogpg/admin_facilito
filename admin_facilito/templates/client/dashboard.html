@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Dashboard</title>
-</head>
-<body>
+{% extends 'client/bases/base_client.html'%}
 
-	<h3>Bienvenido {{ user.username|title }}</h3>
+{% block title %} Dashboard {% endblock %} 
 
-	<a href="{% url 'client:show' user.username %}">Ver mi perfil</a>
-	<a href="{% url 'client:edit'%}">Editar</a>
-	<a href="{% url 'client:edit_password'%}">Editar Password</a>
-	<a href="{% url 'client:logout' %}">Logout</a>
+{% block scripts %} 
+	{# nada por el momenot #}
+{% endblock %} 
 
-</body>
-</html>
+
+{% block content %} 
+
+
+{% endblock %} 
+
+{% block footer %} {% endblock %} 
