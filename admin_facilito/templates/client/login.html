@@ -1,0 +1,27 @@
+{% extends 'bases/base_admin.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block scripts %}
+	{% load staticfiles %}
+	 <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}" /> 
+{% endblock %} 
+
+{% block content %} 
+		{# Aqui que haremos #}
+		<div class = "class_container_form" >
+			<form method="post" action="">
+				{% csrf_token %}
+				{{ form.as_p }}
+				<input type="submit" value="ingreso">
+			</form>
+		</div>
+{% endblock %} 
+
+{% block footer %} 
+	<footer>
+  	<a href="#"> Olvide mi contraseña  </a>
+		<p> Crea una nueva cuenta <a href="{% url 'client:create' %}"> aqui </a></p>
+	</footer>
+{% endblock %}
+

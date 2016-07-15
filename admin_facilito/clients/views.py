@@ -36,14 +36,14 @@ Class
 
 class ShowClass(DetailView):
 	model = User
-	template_name = 'show.html'
+	template_name = 'client/show.html'
 	slug_field = 'username'
 	slug_url_kwarg = 'username_url'
 
 class LoginClass(View):
 	form = LoginUserForm()
 	message = None
-	template = 'login.html'
+	template = 'client/login.html'
 
 	def get(self, request, *args, **kwargs):
 		if request.user.is_authenticated():
@@ -67,11 +67,11 @@ class LoginClass(View):
 class DashboardClass(LoginRequiredMixin, View):
 	login_url = 'client:login'
 	def get(self, request, *args, **kwargs):
-		return render( request, 'dashboard.html', {})
+		return render( request, 'client/dashboard.html', {})
 
 class CreateClass(CreateView):
 	success_url =  reverse_lazy('client:login')
-	template_name = 'create.html'
+	template_name = 'client/create.html'
 	model = User
 	form_class = CreateUserForm
 
@@ -84,7 +84,7 @@ class CreateClass(CreateView):
 class EditClass(LoginRequiredMixin, UpdateView,SuccessMessageMixin):
 	login_url = 'client:login'
 	model = User
-	template_name = 'edit.html'
+	template_name = 'client/edit.html'
 	success_url = reverse_lazy('client:edit')
 	form_class = EditUserForm
 	success_message = "Tu usuarios ha sido actualizado exitosamente"
@@ -118,7 +118,7 @@ def edit_password(request):
 
 
 	context = {'form' : form}
-	return render(request, 'edit_password.html', context)
+	return render(request, 'client/edit_password.html', context)
 
 @login_required( login_url = 'client:login' )
 def logout(request):
