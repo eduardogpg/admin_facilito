@@ -38,6 +38,17 @@
 	   </div>
 	</header>
 
+
+	{% if messages %}
+		<div class="center-align">
+			<ul class="messages">
+	    	{% for message in messages %}
+	    		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	    	{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+
 	{% block content %} {% endblock %} 
 	
 	{% block footer %} {% endblock %} 

@@ -31,6 +31,9 @@ class LoginUserForm(forms.Form):
 															widget = forms.PasswordInput(attrs={'id': 'login_password', 'class': 'validate' }) )
 
 class CreateUserForm(forms.ModelForm):
+	#error_css_class = 'error' #Agrega un estilo al valor
+	#required_css_class = 'required' #Agrega el 
+
 	username = forms.CharField( max_length = 20,  error_messages =  ERROR_MESSAGE_USER  )
 	password = forms.CharField( max_length = 20, widget = forms.PasswordInput(), error_messages =  ERROR_MESSAGE_PASSWORD, label = 'Contraseña'  )
 	email = forms.CharField( error_messages =  ERROR_MESSAGE_EMAIL )
@@ -38,6 +41,13 @@ class CreateUserForm(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = ('username', 'password', 'email')
+
+	def __init__(self, *args, **kwargs):
+		super(CreateUserForm, self).__init__(*args, **kwargs)
+		self.fields['username'].widget.attrs.update({'class' : 'create_use_form'})
+		self.fields['password'].widget.attrs.update({'class' : 'password_use_form'})
+		self.fields['email'].widget.attrs.update({'class' : 'email_use_form'})
+
 
 class EditUserForm(forms.ModelForm):
 	username = forms.CharField( max_length = 20,  error_messages =  ERROR_MESSAGE_USER  )

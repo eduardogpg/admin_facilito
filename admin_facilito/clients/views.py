@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from .models import Client
 
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -40,9 +41,9 @@ class ShowClass(DetailView):
 	slug_field = 'username'
 	slug_url_kwarg = 'username_url'
 
-class LoginClass(View):
+class LoginClass(View, SuccessMessageMixin):
 	form = LoginUserForm()
-	message = None
+	error_message = 'El username o password incorrectos'
 	template = 'client/login.html'
 
 	def get(self, request, *args, **kwargs):
@@ -58,11 +59,11 @@ class LoginClass(View):
 			login_django( request, user)
 			return redirect('client:dashboard')
 		else:
-			self.message = "Username o password incorrectos"
+			messages.success(self.request, self.error_message)
 		return render(request, self.template, self.get_context() )
 
 	def get_context(self):
-		return {'form': self.form, 'message' : self.message}
+		return {'form': self.form }
 
 class DashboardClass(LoginRequiredMixin, View):
 	login_url = 'client:login'
@@ -79,7 +80,12 @@ class CreateClass(CreateView):
 		self.object = form.save(commit = False)
 		self.object.set_password ( self.object.password)
 		self.object.save()
+		self.create_client(self.object)
 		return HttpResponseRedirect( self.get_success_url() ) 
+
+	def create_client(self, user):
+		client = Client(user = user)
+		client.save()
 
 class EditClass(LoginRequiredMixin, UpdateView,SuccessMessageMixin):
 	login_url = 'client:login'
