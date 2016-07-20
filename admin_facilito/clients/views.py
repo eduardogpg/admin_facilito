@@ -17,6 +17,7 @@ from forms import LoginUserForm
 from forms import CreateUserForm
 from forms import EditUserForm
 from forms import EditPasswordForm
+from forms import EditClientForm
 
 from django.views.generic import TemplateView
 from django.views.generic import View
@@ -131,6 +132,25 @@ def logout(request):
 	logout_django(request)
 	return redirect('client:login')
 
+#Tenemos que imprimir dos formularios
+#Imprimimos solo uno, usamos algun tipo de decorador
+@login_required( login_url = 'client:login' )
+def edit_client(request):
+	form_client = EditClientForm(request.POST or None, instance = client_instance(request.user) )
+	form_user = EditUserForm(request.POST or None, instance= request.user)
+
+	if request.method == 'POST':
+		if form_client.is_valid() and form_user.is_valid():
+			
+			form_user.save()
+			form_client.save()
+
+			messages.success(request, 'Datos actualizados correctamente')
+	return render(request, 'client/edit_client.html', {'form_client' : form_client, 'form_user': form_user})
 
 
+def client_instance(user):
+	if user.client is None:
+		return Client(user = user)
+	return user.client
 

@@ -25,21 +25,25 @@ footer p {
   font-size: 12px;
 }
 
-.error{
+.error_input{
+  color: red;
+}
+
+.required_input{
+
+}
+
+.errorlist li{
   color: #CC6679;
 }
 
-.required{
-  color: green;
+.input-field label {
+  color: #ACACAC;
 }
 
- .input-field label {
-   color: #ACACAC;
- }
-
 .input-field input[type=text]:focus + label {
-   color: #ACACAC;
- }
+  color: #ACACAC;
+}
 
 .input-field input[type=text]:focus {
   border-bottom: 1px solid #ACACAC;

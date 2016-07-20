@@ -3,6 +3,7 @@
 
 from django import forms
 from django.contrib.auth.models import User
+from .models import Client 
 
 """
 Constants
@@ -31,8 +32,8 @@ class LoginUserForm(forms.Form):
 															widget = forms.PasswordInput(attrs={'id': 'login_password', 'class': 'validate' }) )
 
 class CreateUserForm(forms.ModelForm):
-	#error_css_class = 'error' #Agrega un estilo al valor
-	#required_css_class = 'required' #Agrega el 
+	error_css_class = 'error_input'
+	required_css_class = 'required_input'
 
 	username = forms.CharField( max_length = 20,  error_messages =  ERROR_MESSAGE_USER  )
 	password = forms.CharField( max_length = 20, widget = forms.PasswordInput(), error_messages =  ERROR_MESSAGE_PASSWORD, label = 'Contraseña'  )
@@ -70,6 +71,14 @@ class EditPasswordForm(forms.Form):
 
 		if password1 != password2:
 			raise forms.ValidationError('Los password no coinciden')
+
+class EditClientForm(forms.ModelForm):
+
+	class Meta:
+		model = Client
+		#fields = '__all__'
+		exclude = ['user']
+
 
 
 

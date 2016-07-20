@@ -12,8 +12,9 @@
 			<form method="post" action="">
 				{% csrf_token %}
 
-				 {# {{ form.as_p }} #}
-				
+				  {# {{ form.as_p }} #}
+
+
 				 	{% for field in form %}
 			      <div class="row">
 			        <div class="input-field col s12">
@@ -25,10 +26,13 @@
 		          	{{ field }}
 
 		          	<label class="{% for class in field.label_classes %}{{ class }} {% endfor %}" for="{{ field.name }}"> {{ field.label }}</label>
+
+
 		        	</div>
 		      	</div>
     			{% endfor %}
 
+				
 				  
 
 				<input class="btn #9e9e9e grey" type="submit" value="ingreso">

@@ -7,6 +7,7 @@ from views import DashboardClass
 from views import CreateClass
 from views import EditClass
 from views import edit_password
+from views import edit_client
 
 app_name = 'client'
 
@@ -18,6 +19,7 @@ urlpatterns = [
     url(r'^create/$', CreateClass.as_view(), name = 'create'),
     url(r'^edit/$', EditClass.as_view(), name = 'edit'),
     url(r'^edit_password/$', edit_password, name = 'edit_password'),
+    url(r'^edit_client/$', edit_client, name = 'edit_client'),
    ]
 
 handler404 = 'mysite.views.my_custom_page_not_found_view'
