@@ -9,13 +9,12 @@
 
 {% block content %} 
 	<div class = "class_container_form" >
+		
 		<form method="post" action="">
 			{% csrf_token %}
-				
-				{{ form_user.as_p }} 
-			 	{{ form_client.as_p }} 
-			
-			
+			{% include "includes/_forms.html" with form=form_user %}
+			{% include "includes/_forms.html" with form=form_client %}
+
 			<input class="btn #9e9e9e grey" type="submit" value="actualizar">
 		</form>
 	</div>

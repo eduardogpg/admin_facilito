@@ -49,10 +49,12 @@ class CreateUserForm(forms.ModelForm):
 		self.fields['password'].widget.attrs.update({'class' : 'password_use_form'})
 		self.fields['email'].widget.attrs.update({'class' : 'email_use_form'})
 
-
 class EditUserForm(forms.ModelForm):
 	username = forms.CharField( max_length = 20,  error_messages =  ERROR_MESSAGE_USER  )
 	email = forms.CharField( error_messages =  ERROR_MESSAGE_EMAIL  )
+	first_name = forms.CharField(label = 'Nombre completo')
+	last_name = forms.CharField(label = 'Apellidos')
+
 
 	class Meta:
 		model = User
@@ -76,7 +78,6 @@ class EditClientForm(forms.ModelForm):
 
 	class Meta:
 		model = Client
-		#fields = '__all__'
 		exclude = ['user']
 
 

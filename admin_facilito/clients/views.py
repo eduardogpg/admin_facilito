@@ -132,19 +132,16 @@ def logout(request):
 	logout_django(request)
 	return redirect('client:login')
 
-#Tenemos que imprimir dos formularios
-#Imprimimos solo uno, usamos algun tipo de decorador
 @login_required( login_url = 'client:login' )
 def edit_client(request):
+
 	form_client = EditClientForm(request.POST or None, instance = client_instance(request.user) )
 	form_user = EditUserForm(request.POST or None, instance= request.user)
 
 	if request.method == 'POST':
 		if form_client.is_valid() and form_user.is_valid():
-			
 			form_user.save()
-			form_client.save()
-
+			form_client.save()	
 			messages.success(request, 'Datos actualizados correctamente')
 	return render(request, 'client/edit_client.html', {'form_client' : form_client, 'form_user': form_user})
 
