@@ -25,14 +25,13 @@ Class
 """
 
 class LoginUserForm(forms.Form):
-	username = forms.CharField( max_length = 20 )
-
-	password = forms.CharField( max_length = 20, label = 'Contraseña')
+	username = forms.CharField( max_length = 20)
+	password = forms.CharField( max_length = 20, label = 'Contraseña', widget=forms.PasswordInput())
 
 	def __init__(self, *args, **kwargs):
 		super(LoginUserForm, self).__init__(*args, **kwargs)
-		self.fields['username'].widget.attrs.update({'id' : 'login_username'})
-		self.fields['password'].widget.attrs.update({'id' : 'login_password'})
+		self.fields['username'].widget.attrs.update({'id' : 'username_login_user', 'class': 'validate'})
+		self.fields['password'].widget.attrs.update({'id' : 'password_login_user', 'class': 'validate'})
 
 
 class CreateUserForm(forms.ModelForm):
@@ -49,9 +48,9 @@ class CreateUserForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		super(CreateUserForm, self).__init__(*args, **kwargs)
-		self.fields['username'].widget.attrs.update({'class' : 'create_use_form'})
-		self.fields['password'].widget.attrs.update({'class' : 'password_use_form'})
-		self.fields['email'].widget.attrs.update({'class' : 'email_use_form'})
+		self.fields['username'].widget.attrs.update({'id': 'username_create_user', 'class' : 'validate'})
+		self.fields['password'].widget.attrs.update({'id': 'password_create_user', 'class' : 'validate'})
+		self.fields['email'].widget.attrs.update({ 'id': 'email_create_user', 'class' : 'validate'})
 
 class EditUserForm(forms.ModelForm):
 	username = forms.CharField( max_length = 20,  error_messages =  ERROR_MESSAGE_USER  )
@@ -59,16 +58,28 @@ class EditUserForm(forms.ModelForm):
 	first_name = forms.CharField(label = 'Nombre completo')
 	last_name = forms.CharField(label = 'Apellidos')
 
-
 	class Meta:
 		model = User
 		fields = ('username', 'email', 'first_name', 'last_name' )
+
+	def __init__(self, *args, **kwargs):
+		super(EditUserForm, self).__init__(*args, **kwargs)
+		self.fields['username'].widget.attrs.update({'id': 'username_edit_user', 'class' : 'validate'})
+		self.fields['first_name'].widget.attrs.update({'id': 'first_name_edit_user', 'class' : 'validate'})
+		self.fields['last_name'].widget.attrs.update({'id': 'last_name_edit_user', 'class' : 'validate'})
+		self.fields['email'].widget.attrs.update({ 'id': 'email_edit_user', 'class' : 'validate'})
 
 class EditPasswordForm(forms.Form):
 	password = forms.CharField( max_length = 20, widget = forms.PasswordInput() )
 	new_password = forms.CharField( max_length = 20, label = "Nueva password" , widget = forms.PasswordInput(), validators = [must_be_gt] )
 	repeat_password = forms.CharField( max_length = 20, label = "Repetir nueva password", widget = forms.PasswordInput(),  validators = [must_be_gt] )
 
+
+	def __init__(self, *args, **kwargs):
+		super(EditPasswordForm, self).__init__(*args, **kwargs)
+		self.fields['password'].widget.attrs.update({'id': 'password_reset_password', 'class' : 'validate'})
+		self.fields['new_password'].widget.attrs.update({'id': 'new_password_reset_password', 'class' : 'validate'})
+		self.fields['repeat_password'].widget.attrs.update({'id': 'repeat_password_reset_password', 'class' : 'validate'})
 
 	def clean(self):
 		clean_data = super(EditPasswordForm,self).clean()
@@ -86,6 +97,12 @@ class EditClientForm(forms.ModelForm):
 	class Meta:
 		model = Client
 		exclude = ['user']
+
+	def __init__(self, *args, **kwargs):
+		super(EditClientForm, self).__init__(*args, **kwargs)
+		self.fields['job'].widget.attrs.update({'id': 'job_edit_client', 'class' : 'validate'})
+		self.fields['bio'].widget.attrs.update({'id': 'bio_edit_client', 'class' : 'validate'})
+
 
 
 
