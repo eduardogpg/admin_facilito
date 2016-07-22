@@ -33,7 +33,6 @@ class LoginUserForm(forms.Form):
 		self.fields['username'].widget.attrs.update({'id' : 'username_login_user', 'class': 'validate'})
 		self.fields['password'].widget.attrs.update({'id' : 'password_login_user', 'class': 'validate'})
 
-
 class CreateUserForm(forms.ModelForm):
 	error_css_class = 'error_input'
 	required_css_class = 'required_input'
@@ -52,6 +51,12 @@ class CreateUserForm(forms.ModelForm):
 		self.fields['password'].widget.attrs.update({'id': 'password_create_user', 'class' : 'validate'})
 		self.fields['email'].widget.attrs.update({ 'id': 'email_create_user', 'class' : 'validate'})
 
+	def clean_email(self):
+		email = self.cleaned_data.get('email')
+		if User.objects.filter(email=email).count():
+			raise forms.ValidationError(u'El email debe de ser unico')
+		return email
+
 class EditUserForm(forms.ModelForm):
 	username = forms.CharField( max_length = 20,  error_messages =  ERROR_MESSAGE_USER  )
 	email = forms.CharField( error_messages =  ERROR_MESSAGE_EMAIL  )
@@ -69,11 +74,17 @@ class EditUserForm(forms.ModelForm):
 		self.fields['last_name'].widget.attrs.update({'id': 'last_name_edit_user', 'class' : 'validate'})
 		self.fields['email'].widget.attrs.update({ 'id': 'email_edit_user', 'class' : 'validate'})
 
+	def clean_email(self):
+		email = self.cleaned_data.get('email')
+		username = self.cleaned_data.get('username')
+		if User.objects.filter(email=email).exclude( username = username).count():
+			raise forms.ValidationError(u'El email debe de ser unico')
+		return email
+
 class EditPasswordForm(forms.Form):
 	password = forms.CharField( max_length = 20, widget = forms.PasswordInput() )
 	new_password = forms.CharField( max_length = 20, label = "Nueva password" , widget = forms.PasswordInput(), validators = [must_be_gt] )
 	repeat_password = forms.CharField( max_length = 20, label = "Repetir nueva password", widget = forms.PasswordInput(),  validators = [must_be_gt] )
-
 
 	def __init__(self, *args, **kwargs):
 		super(EditPasswordForm, self).__init__(*args, **kwargs)

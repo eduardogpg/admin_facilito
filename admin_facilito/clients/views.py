@@ -123,7 +123,6 @@ def edit_password(request):
 			else:
 				messages.error(request, 'El password no es el correcta')
 
-
 	context = {'form' : form}
 	return render(request, 'client/edit_password.html', context)
 
