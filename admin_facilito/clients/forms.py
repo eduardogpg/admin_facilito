@@ -76,8 +76,7 @@ class EditUserForm(forms.ModelForm):
 
 	def clean_email(self):
 		email = self.cleaned_data.get('email')
-		username = self.cleaned_data.get('username')
-		if User.objects.filter(email=email).exclude( username = username).count():
+		if User.objects.filter(email=email).exclude( pk = self.instance.id).count():
 			raise forms.ValidationError(u'El email debe de ser unico')
 		return email
 
