@@ -145,7 +145,6 @@ def edit_client(request):
 			messages.success(request, 'Datos actualizados correctamente')
 	return render(request, 'client/edit_client.html', {'form_client' : form_client, 'form_user': form_user})
 
-
 def client_instance(user):
 	if user.client is None:
 		return Client(user = user)

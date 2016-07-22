@@ -25,11 +25,15 @@ Class
 """
 
 class LoginUserForm(forms.Form):
-	username = forms.CharField( max_length = 20, 
-															widget=forms.TextInput(attrs={'id': 'login_username', 'class': 'validate' }))
+	username = forms.CharField( max_length = 20 )
 
-	password = forms.CharField( max_length = 20, label = 'Contraseña', 
-															widget = forms.PasswordInput(attrs={'id': 'login_password', 'class': 'validate' }) )
+	password = forms.CharField( max_length = 20, label = 'Contraseña')
+
+	def __init__(self, *args, **kwargs):
+		super(LoginUserForm, self).__init__(*args, **kwargs)
+		self.fields['username'].widget.attrs.update({'id' : 'login_username'})
+		self.fields['password'].widget.attrs.update({'id' : 'login_password'})
+
 
 class CreateUserForm(forms.ModelForm):
 	error_css_class = 'error_input'
@@ -75,6 +79,9 @@ class EditPasswordForm(forms.Form):
 			raise forms.ValidationError('Los password no coinciden')
 
 class EditClientForm(forms.ModelForm):
+
+	job = forms.CharField(label= 'Trabajo actual', required = False )
+	bio = forms.CharField(label= 'Biografía', required = False, widget=forms.Textarea)
 
 	class Meta:
 		model = Client
