@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from .models import Client
+from .models import SocialNetwork
 
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -28,6 +29,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
+from django.core.mail import send_mail
 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -81,7 +83,6 @@ class CreateClass(CreateView):
 		self.object = form.save(commit = False)
 		self.object.set_password ( self.object.password)
 		self.object.save()
-		self.create_client(self.object)
 		return HttpResponseRedirect( self.get_success_url() ) 
 
 	def create_client(self, user):
@@ -150,3 +151,5 @@ def client_instance(user):
 	except:
 		return Client(user = user)
 
+
+	

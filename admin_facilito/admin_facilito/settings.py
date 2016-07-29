@@ -127,6 +127,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, "asset") ]
 #STATIC_ROOT = os.path.join( os.path.dirname(BASE_DIR), 'static')
 
+#eduardo.ismael.cf
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'sendgrid_username'
+EMAIL_HOST_PASSWORD = 'sendgrid_password'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
 
 
 

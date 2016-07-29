@@ -1,13 +1,28 @@
+{% extends 'client/bases/base_clients.html'%}
+{% load client_extras %}
+
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>{{ user.username }}</title>
+	{% block title %} {{ user.username|title }} {% endblock%} 
+	<title>{{ user.username|title }}</title>
 </head>
 <body>
 	
-	<p>Hola Usuario  {# user.username #}  </p>
-	<p>Hola Usuario  {{ user.username|title }}  </p>
-	<p>Hola Usuario  {{ user.username|truncatechars:7 }}  </p>
+	{% block content %} 
+	
+		<p>Hola Usuario  {{ user.username|title }}  </p>
+		<p>Hola Usuario  {{ user.client.bio|truncatechars:100 }}  </p>
+    	{% for field in user.socialnetwork|list_fields %}		
+    		{% with user.socialnetwork|value_attr:field as value %}     
+	    		{% if value %}
+	    			<a href="{{ value }}">  {{ field  }} </a>  
+	    		{% endif %}
+    		{% endwith %}
+    	{% endfor %}
+		</table>
+
+	{% endblock %}
 
 </body>
 </html>
