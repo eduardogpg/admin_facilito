@@ -5,9 +5,11 @@ from views import LoginClass
 from views import logout
 from views import DashboardClass
 from views import CreateClass
-from views import EditClass
+from views import EditSocialClass
+
 from views import edit_password
 from views import edit_client
+from views import reset_password
 
 app_name = 'client'
 
@@ -17,9 +19,10 @@ urlpatterns = [
     url(r'^logout/$', logout, name = 'logout'),
     url(r'^dashboard/$', DashboardClass.as_view(), name = 'dashboard'),
     url(r'^create/$', CreateClass.as_view(), name = 'create'),
-    url(r'^edit/$', EditClass.as_view(), name = 'edit'),
-    url(r'^edit_password/$', edit_password, name = 'edit_password'),
-    url(r'^edit_client/$', edit_client, name = 'edit_client'),
+    url(r'^edit/$', edit_client, name = 'edit'),
+    url(r'^edit/password/$', edit_password, name = 'edit_password'),
+    url(r'^edit/social/$', EditSocialClass.as_view(), name = 'edit_social_n'),
+    url(r'^reset_password/$', reset_password, name = 'reset_password'),
    ]
 
 handler404 = 'mysite.views.my_custom_page_not_found_view'

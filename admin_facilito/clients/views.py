@@ -19,6 +19,7 @@ from forms import CreateUserForm
 from forms import EditUserForm
 from forms import EditPasswordForm
 from forms import EditClientForm
+from forms import EditClientSocial
 
 from django.views.generic import TemplateView
 from django.views.generic import View
@@ -33,6 +34,9 @@ from django.core.mail import send_mail
 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
 
 """
 Class
@@ -83,26 +87,28 @@ class CreateClass(CreateView):
 		self.object = form.save(commit = False)
 		self.object.set_password ( self.object.password)
 		self.object.save()
+		self.send_email()
 		return HttpResponseRedirect( self.get_success_url() ) 
 
-	def create_client(self, user):
-		client = Client(user = user)
-		client.save()
+	def send_email(self):
+		pass
 
-class EditClass(LoginRequiredMixin, UpdateView,SuccessMessageMixin):
+class EditSocialClass(LoginRequiredMixin, UpdateView,SuccessMessageMixin):
 	login_url = 'client:login'
-	model = User
-	template_name = 'client/edit.html'
-	success_url = reverse_lazy('client:edit')
-	form_class = EditUserForm
+	model = SocialNetwork
+	template_name = 'client/edit_social.html'
+	success_url = reverse_lazy('client:edit_social_n')
+	form_class = EditClientSocial
 	success_message = "Tu usuarios ha sido actualizado exitosamente"
 
-	def form_valid(self, request, *args, **kwargs):
-		messages.success(self.request, self.success_message)
-		return super(EditClass, self).form_valid(request, *args, **kwargs)
-
 	def get_object(self, queryset = None):
-		return self.request.user
+		return self.get_social_instance()
+
+	def get_social_instance(self):
+		try:
+			return self.request.user.socialnetwork
+		except:
+			return SocialNetwork(user = self.request.user)
 
 """
 Functions
@@ -134,7 +140,6 @@ def logout(request):
 
 @login_required( login_url = 'client:login' )
 def edit_client(request):
-
 	form_client = EditClientForm(request.POST or None, instance = client_instance(request.user) )
 	form_user = EditUserForm(request.POST or None, instance= request.user)
 
@@ -143,7 +148,10 @@ def edit_client(request):
 			form_user.save()
 			form_client.save()	
 			messages.success(request, 'Datos actualizados correctamente')
-	return render(request, 'client/edit_client.html', {'form_client' : form_client, 'form_user': form_user})
+	return render(request, 'client/edit.html', {'form_client' : form_client, 'form_user': form_user})
+
+def reset_password(request):
+	return render(request,'client/reset_password.html',{})
 
 def client_instance(user):
 	try:

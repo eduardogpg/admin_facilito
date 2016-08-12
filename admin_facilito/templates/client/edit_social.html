@@ -6,20 +6,24 @@
 	{% load staticfiles %}
 	 <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}" /> 
 {% endblock %} 
-
+	
 {% block content %} 
+
+	<div class="collection">
+    <a href="{% url 'client:edit' %}" class="collection-item">Perfil</a>
+    <a href="{% url 'client:edit_password' %}" class="collection-item">Password</a>
+    <a href="{% url 'client:edit_social_n' %}" class="collection-item active">Redes Sociales</a>
+  </div>
+
 	<div class = "class_container_form" >
-		
 		<form method="post" action="">
 			{% csrf_token %}
-			
-			{% include "includes/_forms.html" with form=form_user only %}
-			{% include "includes/_forms.html" with form=form_client only %}
-
+			{% include "includes/_forms.html" with form=form only %}
 			<input class="btn #9e9e9e grey" type="submit" value="actualizar">
 		</form>
 	</div>
-
 {% endblock %} 
 
-{% block footer %} {% endblock %} 
+{% block footer %} 
+
+{% endblock %} 

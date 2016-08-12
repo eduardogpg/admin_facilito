@@ -1,10 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
-
-# class User(AbstractUser):
-#     class Meta(object):
-#         unique_together = ('email',)
         
 class Client(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)

@@ -1,31 +1,25 @@
-{% extends 'client/bases/base_clients.html'%}
-{% load client_extras %}
-
+{% load staticfiles %}
+<!DOCTYPE htlm>
 <html>
 <head>
 	<meta charset="UTF-8">
-	{% block title %} {{ user.username|title }} {% endblock%} 
-	<title>{{ user.username|title }}</title>
-</head>
+	<title> {{ user.username|title }} </title>
+  {% load client_extras %}
+
+</head>	
 <body>
-	
-	{% block content %} 
-	
-		<p>Hola Usuario  {{ user.username|title }}  </p>
-		<p>Hola Usuario  {{ user.client.bio|truncatechars:100 }}  </p>
-    	{% for field in user.socialnetwork|list_fields %}		
-    		{% with user.socialnetwork|value_attr:field as value %}     
-	    		{% if value %}
-	    			<a href="{{ value }}">  {{ field  }} </a>  
-	    		{% endif %}
-    		{% endwith %}
-    	{% endfor %}
-		</table>
 
-	{% endblock %}
+	<p>Hola Usuario  {{ user.username|title }}  </p>
+	<p>Hola Usuario  {{ user.client.bio|truncatechars:100 }}  </p>
 
+  	{% for field in user.socialnetwork|list_fields %}		
+  		
+  		{% with user.socialnetwork|value_attr:field as value %}     
+    		{% if value %}
+    			<a href="{{ value }}">  {{ field  }} </a>  
+    		{% endif %}
+  		{% endwith %}
+
+  	{% endfor %}
 </body>
 </html>
-
-
-

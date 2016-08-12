@@ -9,10 +9,6 @@ def list_fields(model):
 def value_attr(model, value):
 	return getattr(model, value)
 
-def attrs(value):
-	return { field.name : getattr(value, field.name) for field in value._meta.get_fields() if not field.is_relation  }
-
-
 register = template.Library()
 register.filter('list_fields', list_fields)
 register.filter('value_attr', value_attr)

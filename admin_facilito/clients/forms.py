@@ -4,6 +4,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Client 
+from .models import SocialNetwork
 
 """
 Constants
@@ -113,7 +114,10 @@ class EditClientForm(forms.ModelForm):
 		self.fields['job'].widget.attrs.update({'id': 'job_edit_client', 'class' : 'validate'})
 		self.fields['bio'].widget.attrs.update({'id': 'bio_edit_client', 'class' : 'validate'})
 
-
+class EditClientSocial(forms.ModelForm):
+	class Meta:
+		model = SocialNetwork
+		exclude = ['user']
 
 
 
