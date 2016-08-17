@@ -26,6 +26,7 @@ from .views import error_404
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^client/', include('clients.urls')),
+    url(r'^project/', include('projects.urls')),
     url(r'^$', home, name = "home"),
 ]
 #+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

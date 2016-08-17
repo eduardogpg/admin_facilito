@@ -1,3 +1,0 @@
-https://docs.djangoproject.com/es/1.9/topics/forms/
-mostrar los mensajes de error
-crear nuevo formulario

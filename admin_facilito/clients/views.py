@@ -28,7 +28,6 @@ from django.views.generic import CreateView
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.core.mail import send_mail
 
@@ -36,7 +35,8 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 
 """
 Class
@@ -87,11 +87,7 @@ class CreateClass(CreateView):
 		self.object = form.save(commit = False)
 		self.object.set_password ( self.object.password)
 		self.object.save()
-		self.send_email()
 		return HttpResponseRedirect( self.get_success_url() ) 
-
-	def send_email(self):
-		pass
 
 class EditSocialClass(LoginRequiredMixin, UpdateView,SuccessMessageMixin):
 	login_url = 'client:login'
@@ -160,4 +156,5 @@ def client_instance(user):
 		return Client(user = user)
 
 
+	
 	
