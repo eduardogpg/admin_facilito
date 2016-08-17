@@ -14,7 +14,13 @@ class CreateProjectForm(forms.ModelForm):
 		model = Project
 		fields = ('title', 'description', 'dead_line')
 
-	def __init__(self, *args, **kwargs):
-		super(CreateProjectForm, self).__init__(*args, **kwargs)
-		self.fields['title'].widget.attrs.update({'class' : 'validate'})
-		self.fields['description'].widget.attrs.update({'class' : 'validate'})
+
+class EditProjectForm(forms.ModelForm):
+	title = forms.CharField(label = 'Titulo', required = True)
+	description = forms.CharField(label = 'Descripción', required = True, widget=forms.Textarea)
+	dead_line = forms.DateField(initial=datetime.date.today)
+
+	class Meta:
+		model = Project
+		fields = ('title', 'description', 'dead_line')
+

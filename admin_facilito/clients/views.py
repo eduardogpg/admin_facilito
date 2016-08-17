@@ -95,9 +95,11 @@ class EditSocialClass(LoginRequiredMixin, UpdateView,SuccessMessageMixin):
 	template_name = 'client/edit_social.html'
 	success_url = reverse_lazy('client:edit_social_n')
 	form_class = EditClientSocial
-	success_message = "Tu usuarios ha sido actualizado exitosamente"
+	success_message = "Tu usuarios ha sido actualizado exitosamente."
+
 
 	def get_object(self, queryset = None):
+		""" By default this requires `self.queryset` and a `pk` or `slug` argument """
 		return self.get_social_instance()
 
 	def get_social_instance(self):
@@ -156,5 +158,4 @@ def client_instance(user):
 		return Client(user = user)
 
 
-	
 	

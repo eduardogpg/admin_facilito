@@ -9,11 +9,13 @@
 	
 {% block content %} 
 
-	<h4>{{ project.description }}</h4>
-
-	{% if request.user.id == project.user_id %}
-			<a href="{% url 'project:edit' project.slug %}">Editar</a>
-	{% endif %}
+	<div class = "class_container_form" >
+		<form method="post" action="">
+			{% csrf_token %}
+			{% include "includes/_forms.html" with form=form only %}
+			<input class="btn #9e9e9e grey" type="submit" value="actualizar">
+		</form>
+	</div>
 
 {% endblock %} 
 
