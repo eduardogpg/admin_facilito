@@ -3,6 +3,7 @@ from .models import Project
 from django.shortcuts import render
 
 from django.views.generic import CreateView
+from django.views.generic import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -36,3 +37,13 @@ class ListClass(ListView, LoginRequiredMixin):
 	def get_queryset(self):
 		return Project.objects.filter(user=self.request.user)
 	
+
+class ShowClass(DetailView):
+	model = Project
+	template_name = 'project/show.html'
+	slug_field = 'slug'
+	slug_url_kwarg = 'slug'
+
+
+
+

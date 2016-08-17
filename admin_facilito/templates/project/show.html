@@ -1,0 +1,27 @@
+{% extends 'client/bases/base_client.html'%}
+
+{% block title %} {{ project.title }} {% endblock %} 
+
+{% block scripts %}
+	{% load staticfiles %}
+	 <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}" /> 
+{% endblock %} 
+	
+{% block content %} 
+
+	<h4>{{ project.description }}</h4>
+
+	{% if request.user.id == project.user_id %}
+
+		<form action="" method="post">{% csrf_token %}
+    		<p>Are you sure you want to delete "{{ object }}"?</p>
+    		<input type="submit" value="Confirm" />
+		</form>
+
+	{% endif %}
+
+{% endblock %} 
+
+{% block footer %} 
+
+{% endblock %} 

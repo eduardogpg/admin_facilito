@@ -8,12 +8,11 @@
 {% endblock %} 
 	
 {% block content %} 
-
 	<div class = "class_container_form" >
 		<form method="post" action="">
 			{% csrf_token %}
 			{% include "includes/_forms.html" with form=form only %}
-			<input class="btn #9e9e9e grey" type="submit" value="actualizar">
+			<input class="btn #9e9e9e grey" type="submit" value="crear">
 		</form>
 	</div>
 {% endblock %} 
