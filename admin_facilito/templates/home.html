@@ -7,7 +7,26 @@
 {% endblock %} 
 
 {% block content %} 
-		{# Aqui que haremos #}
+		<h5>Los proyectos más destacados</h5>
+		{% for project in projects %}
+			<p>	
+				<a href="{% url 'project:show' project.slug %}">{{ project }} </a>
+			</p>	
+		{% endfor %}
+
+		<h5>Los proyectos más recientes</h5>
+		{% for project in projects %}
+			<p>	
+				<a href="{% url 'project:show' project.slug %}">{{ project }} </a>
+			</p>	
+		{% endfor %}
+
+		<h5>Proyectos finalizados este mes.</h5>
+		{% for project in projects %}
+			<p>	
+				<a href="{% url 'project:show' project.slug %}">{{ project }} </a>
+			</p>	
+		{% endfor %}
 {% endblock %} 
 
 {% block footer %} 

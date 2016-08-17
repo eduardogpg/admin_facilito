@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -24,3 +27,6 @@ class Project(models.Model):
 		self.validate_unique()
 		self.slug = self.title.replace(" ", "_").lower()
 		super(Project, self).save(*args, **kwargs)
+
+	def get_format_date(self):
+		return "Eduardo Ismael García Pérez"
