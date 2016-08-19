@@ -97,7 +97,6 @@ class EditSocialClass(LoginRequiredMixin, UpdateView,SuccessMessageMixin):
 	form_class = EditClientSocial
 	success_message = "Tu usuarios ha sido actualizado exitosamente."
 
-
 	def get_object(self, queryset = None):
 		""" By default this requires `self.queryset` and a `pk` or `slug` argument """
 		return self.get_social_instance()

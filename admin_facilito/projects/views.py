@@ -39,7 +39,9 @@ class CreateClass(CreateView, LoginRequiredMixin):
 		self.object = form.save(commit = False)
 		self.object.user = self.request.user
 		self.object.save()
+		self.object.projectstatus_set.create(status_id = 1)
 		self.prepare_success_url()
+
 		return HttpResponseRedirect( self.get_success_url() ) 
 
 	def prepare_success_url(self):

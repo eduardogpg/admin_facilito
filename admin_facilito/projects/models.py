@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from django.db import models
+from status.models import Status
+
 import datetime
 
 class Project(models.Model):
@@ -29,4 +31,18 @@ class Project(models.Model):
 		super(Project, self).save(*args, **kwargs)
 
 	def get_format_date(self):
-		return "Eduardo Ismael García Pérez"
+		return "Formato de fechas"
+
+
+class ProjectStatus(models.Model):
+	project = models.ForeignKey(Project, on_delete=models.CASCADE)
+	status = models.ForeignKey(Status)
+	create_date = models.DateField(default=datetime.date.today)
+	
+	def __str__(self):
+		return "{} - {}".format(self.project.title, self.status.title)
+
+
+
+
+

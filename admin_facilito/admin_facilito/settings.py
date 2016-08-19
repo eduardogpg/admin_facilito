@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'admin_facilito.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'admin_facilito',
+        'NAME': 'admin_facilito_local',
         'USER': 'root',
         'Password' : '',
         'HOST': '127.0.0.1',
