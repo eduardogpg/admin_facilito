@@ -10,8 +10,14 @@
 {% block content %} 
 
 	<a href="{% url 'client:show' user.username %}"> <h3> {{ user.username|title }}</h3> </a>
-	<a href="{% url 'project:create' %}">Nuevo Projecto</a>
-	<a href="{% url 'project:own' %}">Mis Proyectos</a>
+	
+	<p>
+		<a href="{% url 'project:create' %}">Nuevo Projecto</a>
+	</p>
+
+	<p>
+		<a href="{% url 'project:own' %}">Mis Proyectos</a>
+	</p>
 
 {% endblock %} 
 

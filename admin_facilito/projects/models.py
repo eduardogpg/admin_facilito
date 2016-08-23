@@ -21,18 +21,14 @@ class Project(models.Model):
 	def __str__(self):
 		return self.title
 
-	def validate_unique(self, exclude=None):
-		if Project.objects.filter(title = self.title).exclude(pk=self.id).exists():
-			raise ValidationError('El proyecto ya se encuentra registrado.')
-
-	def save(self, *args, **kwargs):
-		self.validate_unique()
-		self.slug = self.title.replace(" ", "_").lower()
-		super(Project, self).save(*args, **kwargs)
-
-	def get_format_date(self):
-		return "Formato de fechas"
-
+	def clean(self):
+		self.slug = self.create_slug_field(self.title)
+		if Project.objects.filter(slug = self.slug).exclude(pk=self.id).exists():
+			raise ValidationError('El proyecto ya se encuentra registrado.!')
+		super(Project, self).clean()
+	
+	def create_slug_field(self, value):
+		return value.lower().replace(" ", "-")
 
 class ProjectStatus(models.Model):
 	project = models.ForeignKey(Project, on_delete=models.CASCADE)

@@ -8,7 +8,7 @@ def home(request):
 	if request.user.is_authenticated():
 		return redirect('client:dashboard')
 
-	projects = Project.objects.all()[:5]
+	projects = [] #Project.objects.all()[:5]
 	return render(request, 'home.html', {'projects' : projects})
 
 def error_404(request):
