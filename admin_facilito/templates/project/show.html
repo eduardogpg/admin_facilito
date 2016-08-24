@@ -15,6 +15,10 @@
 	<p> Fecha limite de expiración : </p>
 	<p> {{ project.dead_line|date_format }} </p>
 
+	<h4>Status</h4>
+	<h5> {{ project.get_status.title }} </h5>
+	
+
 
 	{% if request.user.id == project.user_id %}
 		<a href="{% url 'project:edit' project.slug %}">Editar</a>

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -21,14 +20,18 @@ class Project(models.Model):
 	def __str__(self):
 		return self.title
 
-	def clean(self):
+	def validate_unique(self, exclude=None):
 		self.slug = self.create_slug_field(self.title)
 		if Project.objects.filter(slug = self.slug).exclude(pk=self.id).exists():
-			raise ValidationError('El proyecto ya se encuentra registrado.!')
+			raise ValidationError('El proyecto ya se encuentra registrado!')
 		super(Project, self).clean()
 	
 	def create_slug_field(self, value):
 		return value.lower().replace(" ", "-")
+
+	def get_status(self):
+		return self.projectstatus_set.last().status
+
 
 class ProjectStatus(models.Model):
 	project = models.ForeignKey(Project, on_delete=models.CASCADE)

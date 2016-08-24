@@ -1,4 +1,5 @@
 from .models import Project
+from .models import ProjectStatus
 
 from django.shortcuts import render
 
@@ -28,21 +29,22 @@ Class
 class ShowClass(DetailView):
 	model = Project
 	template_name = 'project/show.html'
-	slug_field = 'slug'
-	slug_url_kwarg = 'slug'
 
 class CreateClass(CreateView, LoginRequiredMixin):
 	login_url = 'client:login'
 	template_name = 'project/create.html'
 	model = Project
 	form_class = CreateProjectForm
-	success_url = reverse_lazy('client:dashboard')
 
 	def form_valid(self, form):
 		self.object = form.save(commit = False)
 		self.object.user = self.request.user
 		self.object.save()
-		return HttpResponseRedirect( self.get_success_url() ) 
+		self.object.projectstatus_set.create(status_id = 1)
+		return HttpResponseRedirect( self.project_show() ) 
+
+	def project_show(self):
+		return reverse_lazy('project:show', kwargs={'slug': self.object.slug})
 
 class ListClass(ListView, LoginRequiredMixin):
 	login_url = 'client:login'
@@ -54,7 +56,6 @@ class ListClass(ListView, LoginRequiredMixin):
 #http://stackoverflow.com/questions/18172102/object-ownership-validation-in-django-updateview
 class EditClass(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
 	login_url = 'client:login'
-
 	success_url =  reverse_lazy('client:dashboard')
 
 	template_name = 'project/edit.html'
@@ -73,20 +74,31 @@ class EditClass(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
 	def prepare_fake_url(self):
 		return reverse_lazy('project:show', kwargs={'slug': self.object.slug})
 
-	#http://stackoverflow.com/questions/21046626/django-form-with-a-one-to-many-relationship
-	#Inlibes block
-	#https://docs.djangoproject.com/en/dev/ref/contrib/admin/#inlinemodeladmin-objects
+#http://stackoverflow.com/questions/21046626/django-form-with-a-one-to-many-relationship
+#Inlibes block
+#https://docs.djangoproject.com/en/dev/ref/contrib/admin/#inlinemodeladmin-objects
 
+#validar que solo los usuarios puedan actualizar sus propios productos
 @login_required( login_url = 'client:login' )
-def edit(request):
-	form_project = EditProjectForm(request.POST or None)
+def edit(request, slug = ''):
+	project = get_object_or_404(Project, slug=slug)
+	form_project = EditProjectForm(request.POST or None, instance = project)
 	form_status = StatusChoiceForm(request.POST or None)
 	
 	if request.method == 'POST':
 		if form_project.is_valid() and form_status.is_valid():
+			form_project.save()
+			selection = form_status.cleaned_data['status'].id
+			
+			if selection != project.get_status().status_id:
+				project.projectstatus_set.create(status_id = selection)
 			messages.success(request, 'Datos actualizados correctamente')
-	return render(request, 'project/edit.html', {'form_project' : form_project, 'form_status': form_status})
+
+	context = {
+		'project' : project,
+		'form_project' : form_project,
+		'form_status': form_status
+	}
+	return render(request, 'project/edit.html', context)
 
 	
-
-

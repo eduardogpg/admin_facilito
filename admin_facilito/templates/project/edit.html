@@ -12,7 +12,9 @@
 	<div class = "class_container_form" >
 		<form method="post" action="">
 			{% csrf_token %}
-			{% include "includes/_forms.html" with form=form only %}
+			{% include "includes/_forms.html" with form=form_project only %}
+			{% include "includes/_forms.html" with form=form_status only %}
+
 			<input class="btn #9e9e9e grey" type="submit" value="actualizar">
 		</form>
 	</div>
