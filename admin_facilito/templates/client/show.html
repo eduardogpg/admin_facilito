@@ -8,18 +8,20 @@
 
 </head>	
 <body>
-
 	<p>Hola Usuario  {{ user.username|title }}  </p>
 	<p>Hola Usuario  {{ user.client.bio|truncatechars:100 }}  </p>
 
-  	{% for field in user.socialnetwork|list_fields %}		
-  		
-  		{% with user.socialnetwork|value_attr:field as value %}     
-    		{% if value %}
-    			<a href="{{ value }}">  {{ field  }} </a>  
-    		{% endif %}
-  		{% endwith %}
+  {% if user.socialnetwork %}
 
-  	{% endfor %}
+    {% for field in user.socialnetwork|list_fields %}   
+      {% with user.socialnetwork|value_attr:field as value %}     
+        {% if value %}
+          <a href="{{ value }}">  {{ field  }} </a>  
+        {% endif %}
+      {% endwith %}
+    {% endfor %}
+    
+  {% endif %}
+  	
 </body>
 </html>

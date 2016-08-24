@@ -4,7 +4,6 @@ from .views import CreateClass
 from .views import ListClass
 from .views import ShowClass
 from .views import EditClass
-
 from .views import edit
 
 app_name = 'project'

@@ -5,16 +5,16 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from django.db import models
-from status.models import Status
+from django.utils import timezone
 
-import datetime
+from status.models import Status
 
 class Project(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=50)
 	description = models.TextField ()
 	dead_line = models.DateField()
-	create_date = models.DateField(default=datetime.date.today)
+	create_date = models.DateTimeField(default = timezone.now)
 	slug = models.CharField(max_length=50, default="")
 
 	def __str__(self):
@@ -36,10 +36,12 @@ class Project(models.Model):
 class ProjectStatus(models.Model):
 	project = models.ForeignKey(Project, on_delete=models.CASCADE)
 	status = models.ForeignKey(Status)
-	create_date = models.DateField(default=datetime.date.today)
+	create_date = models.DateTimeField(default = timezone.now)
 	
 	def __str__(self):
 		return "{} - {}".format(self.project.title, self.status.title)
+
+
 
 
 

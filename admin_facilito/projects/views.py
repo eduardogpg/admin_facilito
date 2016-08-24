@@ -53,7 +53,6 @@ class ListClass(ListView, LoginRequiredMixin):
 	def get_queryset(self):
 		return Project.objects.filter(user=self.request.user).order_by('dead_line')
 	
-#http://stackoverflow.com/questions/18172102/object-ownership-validation-in-django-updateview
 class EditClass(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
 	login_url = 'client:login'
 	success_url =  reverse_lazy('client:dashboard')
@@ -74,14 +73,13 @@ class EditClass(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
 	def prepare_fake_url(self):
 		return reverse_lazy('project:show', kwargs={'slug': self.object.slug})
 
-#http://stackoverflow.com/questions/21046626/django-form-with-a-one-to-many-relationship
-#Inlibes block
-#https://docs.djangoproject.com/en/dev/ref/contrib/admin/#inlinemodeladmin-objects
-
-#validar que solo los usuarios puedan actualizar sus propios productos
 @login_required( login_url = 'client:login' )
 def edit(request, slug = ''):
 	project = get_object_or_404(Project, slug=slug)
+	
+	if request.user.id != project.user_id:
+		return redirect('client:dashboard')
+
 	form_project = EditProjectForm(request.POST or None, instance = project)
 	form_status = StatusChoiceForm(request.POST or None)
 	
@@ -101,4 +99,3 @@ def edit(request, slug = ''):
 	}
 	return render(request, 'project/edit.html', context)
 
-	
