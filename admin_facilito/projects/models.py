@@ -50,6 +50,13 @@ class PermissionProject(models.Model):
 	active = models.BooleanField(default=True)
 	create_date = models.DateTimeField(default = timezone.now)
 
+	@classmethod
+	def default_value(cls):
+		return cls.objects.get(pk=1)
+
+	def __str__(self):
+		return self.title
+
 class ProjectUser(models.Model):
 	project = models.ForeignKey(Project)
 	user = models.ForeignKey(User)

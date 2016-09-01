@@ -1,5 +1,7 @@
+from django.contrib.auth.models import User
 from .models import Project
 from .models import ProjectStatus
+from .models import PermissionProject
 from status.models import Status
 
 from django.shortcuts import render
@@ -9,6 +11,7 @@ from django.views.generic import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
@@ -23,6 +26,10 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
 
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.http import require_http_methods
+from django.shortcuts import redirect
+import json
 """
 Class
 """
@@ -103,15 +110,25 @@ def edit(request, slug = ''):
 	return render(request, 'project/edit.html', context)
 
 @login_required( login_url = 'client:login' )
-def add_user(request):
-	return render(request, 'project/add_user.html', {})
-
-@login_required( login_url = 'client:login' )
-def collaboration(request, slug = ''):
+def collaboration(request, slug=''):
 	project = get_object_or_404(Project, slug=slug)
 	context = {
 		'project' : project
 	}
 	return render(request, 'project/collaboration.html', context)
-	
 
+@csrf_exempt
+def add_collaboration(request, slug='', username=''):
+	user = get_object_or_none(User, username = username)
+	project = get_object_or_none(Project, slug = slug)
+	if user is not None and project is not None:
+		project.projectuser_set.create(user = user, permission = PermissionProject.default_value() )
+
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def get_object_or_none(object_model, **kwargs):
+	try:
+		return object_model.objects.get(**kwargs)
+	except ObjectDoesNotExist:
+		return None

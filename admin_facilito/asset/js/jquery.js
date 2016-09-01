@@ -26,9 +26,10 @@ $( document ).ready(function() {
 
   function load_user(data){
     $("#search-result ul").empty()
+    var url  = window.location.href; 
+
     data.forEach(function (user) {
-      console.log(user.username)
-      inner_html = " <li>" + user.username  +"<a href='#'> Agregar</a> </li>"
+      inner_html = " <li>" + user.username  +"<a href='"+ url+"add/"+  user.username +"'> Agregar</a> </li>"
       $("#search-result ul").append(inner_html)
     })
   }

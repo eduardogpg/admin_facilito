@@ -41,7 +41,6 @@ from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
-
 import json
 
 """
@@ -167,8 +166,6 @@ def search(request):
 		data,
 		content_type="application/json"
 	)
-
-
 
 def client_instance(user):
 	try:
