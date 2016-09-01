@@ -101,7 +101,6 @@ class EditPasswordForm(forms.Form):
 			raise forms.ValidationError('Los password no coinciden')
 
 class EditClientForm(forms.ModelForm):
-
 	job = forms.CharField(label= 'Trabajo actual', required = False )
 	bio = forms.CharField(label= 'Biografía', required = False, widget=forms.Textarea)
 

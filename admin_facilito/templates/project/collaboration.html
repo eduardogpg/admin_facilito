@@ -11,7 +11,9 @@
 {% block content %} 
 	
   {% for user in project.projectuser_set.all %}
-    <p> {{ user.username }} </p>
+    {% with user.get_user as collaborator %}
+      <p> {{ collaborator.username }} | {{  user.permission.title }} </p>
+    {% endwith %}
   {% endfor %}
 
   <form method="post" action="." id="search-user-form">

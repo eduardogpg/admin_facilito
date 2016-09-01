@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from .models import Project
 from .models import ProjectStatus
 from .models import PermissionProject
+from .models import ProjectUser
 from status.models import Status
 
 from django.shortcuts import render
@@ -12,6 +13,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
@@ -81,6 +83,43 @@ class EditClass(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
 	def prepare_fake_url(self):
 		return reverse_lazy('project:show', kwargs={'slug': self.object.slug})
 
+class AddCollaborationClass(TemplateView):
+	def validate_unique_user(self):
+		return ProjectUser.objects.filter(user = self.user).count() == 0
+
+	def validate_permissions(self):
+		return self.project.has_permission(self.current_user)
+			
+	def validate_action_project(self):
+		if self.user is not None and self.project is not None:
+			self.is_valid = self.validate_unique_user() and self.validate_permissions()
+		else:
+			self.is_valid = False
+
+		print "Eduardo Ismael"
+		print self.is_valid
+		
+	def create_instance(self):
+		self.user = get_object_or_none(User, username = self.username)	
+		self.project = get_object_or_none(Project, slug = self.slug)
+		self.current_user = self.request.user
+
+	def dispatch(self, request, *args, **kwargs):
+		self.slug = self.kwargs['slug']
+		self.username = self.kwargs['username']
+
+		self.create_instance()
+		self.validate_action_project()
+		return super(AddCollaborationClass, self).dispatch(request, *args, **kwargs)
+
+	def get(self, request, *args, **kwargs):
+		if self.is_valid:
+			self.project.projectuser_set.create(user = self.user, permission = PermissionProject.default_value() )				
+		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))		
+
+"""
+functions
+"""
 @login_required( login_url = 'client:login' )
 def edit(request, slug = ''):
 	project = get_object_or_404(Project, slug=slug)
@@ -117,18 +156,27 @@ def collaboration(request, slug=''):
 	}
 	return render(request, 'project/collaboration.html', context)
 
-@csrf_exempt
+@login_required( login_url = 'client:login' )
 def add_collaboration(request, slug='', username=''):
 	user = get_object_or_none(User, username = username)
 	project = get_object_or_none(Project, slug = slug)
+
 	if user is not None and project is not None:
 		project.projectuser_set.create(user = user, permission = PermissionProject.default_value() )
 
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
 
 def get_object_or_none(object_model, **kwargs):
 	try:
 		return object_model.objects.get(**kwargs)
 	except ObjectDoesNotExist:
 		return None
+
+def has_permisions(fn=None):
+	pass
+
+
+
+
+
+
