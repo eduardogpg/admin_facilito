@@ -1,5 +1,6 @@
 from .models import Project
 from .models import ProjectStatus
+from status.models import Status
 
 from django.shortcuts import render
 
@@ -40,7 +41,7 @@ class CreateClass(CreateView, LoginRequiredMixin):
 		self.object = form.save(commit = False)
 		self.object.user = self.request.user
 		self.object.save()
-		self.object.projectstatus_set.create(status_id = 1)
+		self.object.projectstatus_set.create(status = Status.dafault_value() )
 		return HttpResponseRedirect( self.project_show() ) 
 
 	def project_show(self):
@@ -76,12 +77,14 @@ class EditClass(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
 @login_required( login_url = 'client:login' )
 def edit(request, slug = ''):
 	project = get_object_or_404(Project, slug=slug)
-	
+
 	if request.user.id != project.user_id:
 		return redirect('client:dashboard')
 
 	form_project = EditProjectForm(request.POST or None, instance = project)
-	form_status = StatusChoiceForm(request.POST or None)
+	form_status = StatusChoiceForm(request.POST or None, 
+																	initial = {'status':  project.get_id_status() }
+																)
 	
 	if request.method == 'POST':
 		if form_project.is_valid() and form_status.is_valid():
@@ -98,4 +101,8 @@ def edit(request, slug = ''):
 		'form_status': form_status
 	}
 	return render(request, 'project/edit.html', context)
+
+@login_required( login_url = 'client:login' )
+def add_user(request):
+	return render(request, 'project/add_user.html', {})
 

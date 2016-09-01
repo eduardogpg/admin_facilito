@@ -48,36 +48,30 @@ Client
 43-Formulario Project
 44-Crear Projecto
 45-listView
+46-Slug
 
-46-Slug --> hablar más a detaller
 47-Mostrar Projecto
-	debemos de cambiar la ruta de mostrar del proyecto
-	w+
-	Validamos que sea el administrador el unico que pueda modificar el proyecto
-
-
 48-Crear modelo Estatus
-	Crear modelo Projects_status
-	Agregar el modelo al administrador
-	Al agregar el projecto que se cre un log de estatus
-
-49-Modificar Projecto
-	Agregamos los dos formularios
-	Validamos los dos formularios y Almacenamos una nueva relación
-
-50- Creamos una función get_status
-		La cual nos permitira obtener la relación que hay
-
+49-Agregar el modelo ProjectsStus
 51-InLine
 	
 
+50-Modificar Projecto
+	Solo los dueños del proyecto pueden modificar el proyecto
+		if
+	Agregamos mis proyectos
+	Nuevo Projecto
+	
+51-Validamos que se envien los proyectos.
+	Agregamos más relaciones
+	Validamos que el status no se a el mismo al de los proyectos
+		get_status
+	Ya que tenemos el proyecto agregamos un default.
+
+Asignar colaboradores
 
 
-Validar que los usuarios puedan o no tener más de redes sociales. * Pendiente
-Slug Field Django * 
-
-
-
+	
 
 Show Projects.
 	Validar que el usuario sea le dueño de la aplicación para colocar el delete y el update.

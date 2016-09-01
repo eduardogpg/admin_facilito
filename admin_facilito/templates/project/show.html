@@ -18,10 +18,14 @@
 	<h4>Status</h4>
 	<h5> {{ project.get_status.title }} </h5>
 
-
 	{% if request.user.id == project.user_id %}
 		<a href="{% url 'project:edit' project.slug %}">Editar</a>
 	{% endif %}
+
+	<p> Los estatus son</p>
+	{% for status in project.projectstatus_set.all  %}
+		<p> {{ status.create_date }} </p>
+	{% endfor %}
 
 {% endblock %} 
 

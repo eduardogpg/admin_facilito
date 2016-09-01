@@ -19,3 +19,7 @@ class Status(models.Model):
 	class Meta:
 		verbose_name = "Status"
 		verbose_name_plural = "Status"
+
+	@classmethod
+	def dafault_value(cls):
+		return cls.objects.get(pk=1)

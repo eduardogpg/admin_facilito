@@ -10,6 +10,8 @@ from views import EditSocialClass
 from views import edit_password
 from views import edit_client
 from views import reset_password
+from views import search
+
 
 app_name = 'client'
 
@@ -21,8 +23,8 @@ urlpatterns = [
     url(r'^create/$', CreateClass.as_view(), name = 'create'),
     url(r'^edit/$', edit_client, name = 'edit'),
     url(r'^edit/password/$', edit_password, name = 'edit_password'),
-    url(r'^edit/social/$', EditSocialClass.as_view(), name = 'edit_social_n'),
-    url(r'^reset_password/$', reset_password, name = 'reset_password'),
+    url(r'^edit/social/$', EditSocialClass.as_view(), name = 'edit_social'),
+    url(r'^search/$', search, name = 'search'),
    ]
 
 handler404 = 'mysite.views.my_custom_page_not_found_view'

@@ -9,12 +9,6 @@
 	
 {% block content %} 
 
-	<div class="collection">
-    <a href="{% url 'client:edit' %}" class="collection-item">Perfil</a>
-    <a href="{% url 'client:edit_password' %}" class="collection-item">Password</a>
-    <a href="{% url 'client:edit_social_n' %}" class="collection-item active">Redes Sociales</a>
-  </div>
-
 	<div class = "class_container_form" >
 		<form method="post" action="">
 			{% csrf_token %}

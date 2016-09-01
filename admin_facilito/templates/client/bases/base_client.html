@@ -19,21 +19,36 @@
 <body>
 	<header>
 	  <div class="navbar-fixed">
+	  	
+	  	<ul id="user-edit" class="dropdown-content">
+  			<li><a href="{% url 'client:edit' %}">Perfil</a></li>
+  			<li><a href="{% url 'client:edit_password' %}">Password</a></li>
+  			<li><a href="{% url 'client:edit_social' %}">Redes Sociales</a></li>
+  			<li class="divider"></li>
+			</ul>
+
 	    <nav>
 	      <div class="nav-wrapper #9e9e9e grey">
 	      	<a href="{% url 'client:dashboard' %}" class="brand-logo">Admin Facilito</a>
 	        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 	        
-	        <ul class="right hide-on-med-and-down lighten-2">
-	          <li><a href="{% url 'client:edit' %}">Editar</a></li>
-	          <li><a href="{% url 'client:logout' %}">logout</a></li>
-	        </ul>
+		      <ul class="right hide-on-med-and-down lighten-2">
+		      	<li>
+		      		<a href="{% url 'project:own' %}">Mis projectos</a>
+		      	</li>
 
-	        <ul class="side-nav" id="mobile-demo">
-	          <li><a href="{% url 'client:edit' %}">Editar</a></li>
-	          <li><a href="{% url 'client:logout' %}">logout</a></li>
-	        </ul>
+	          <li>
+	          	<a class="dropdown-button" href="#!" data-activates="user-edit">Editar
+	          		<i class="material-icons right">arrow_drop_down</i>
+	          	</a>
+	          </li>
 
+	          <li>
+	          	<a href="{% url 'client:logout' %}">logout
+	          	</a>
+	          </li>
+	          
+	        </ul>
 	      </div>
 	    </nav>
 	   </div>
@@ -52,11 +67,10 @@
 	{% block content %} {% endblock %} 
 	
 	{% block footer %} {% endblock %} 
-
-
-{{ email|urlize }}
-
-
-
+	<script type="text/javascript">
+		$( document ).ready(function() {
+  		$(".dropdown-button").dropdown();
+		});
+	</script>
 </body>
 </html>

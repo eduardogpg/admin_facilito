@@ -30,11 +30,13 @@ class Project(models.Model):
 		return value.lower().replace(" ", "-")
 
 	def get_status(self):
-		return self.projectstatus_set.last().status
+		return self.projectstatus_set.last()
 
+	def get_id_status(self):
+		return self.projectstatus_set.last().status.id		
 
 class ProjectStatus(models.Model):
-	project = models.ForeignKey(Project, on_delete=models.CASCADE)
+	project = models.ForeignKey(Project)
 	status = models.ForeignKey(Status)
 	create_date = models.DateTimeField(default = timezone.now)
 	
@@ -42,8 +44,16 @@ class ProjectStatus(models.Model):
 		return "{} - {}".format(self.project.title, self.status.title)
 
 
+class PermissionProject(models.Model):
+	title = models.CharField(max_length=50)
+	description = models.TextField()
+	level = models.IntegerField()
+	active = models.BooleanField(default=True)
+	create_date = models.DateTimeField(default = timezone.now)
 
-
-
-
-
+class ProjectUser(models.Model):
+	project = models.ForeignKey(Project)
+	user = models.ForeignKey(User)
+	permission = models.ForeignKey(PermissionProject)
+	create_date = models.DateTimeField(default = timezone.now)
+	update_date = models.DateTimeField(default = timezone.now)

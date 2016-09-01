@@ -9,8 +9,6 @@ class StatusChoiceForm(forms.Form):
 		super(StatusChoiceForm, self).__init__(*args, **kwargs)
 		self.fields['status'].widget.attrs.update({'class' : 'browser-default'})
 
-
 	class Meta:
 		model = Project
 		fields = ('__all__')
-	
