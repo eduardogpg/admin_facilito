@@ -10,7 +10,12 @@
 {% block content %} 
 
 	{% for project in object_list %}
-		<a href="{% url 'project:show' project.slug %}"> <li>{{ project.title }}</li> </a>
+		<a href="{% url 'project:show' project.project.title %}"> <li>{{ project.project.title }}</li> </a>
+	{% endfor %}
+
+	<p>Projectos en colaboración : </p>
+	{% for project_colaboration in projects_colaborations %}
+		<a href="{% url 'project:show' project_colaboration.project.slug %}"> <li>{{ project_colaboration.project.title }}</li> </a>
 	{% endfor %}
 
 {% endblock %} 

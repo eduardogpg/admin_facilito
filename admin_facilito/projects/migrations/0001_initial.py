@@ -26,7 +26,6 @@ class Migration(migrations.Migration):
                 ('dead_line', models.DateField()),
                 ('create_date', models.DateTimeField(default=datetime.datetime(2016, 8, 24, 21, 12, 44, 625132))),
                 ('slug', models.CharField(default='', max_length=50)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

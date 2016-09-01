@@ -84,10 +84,12 @@ DATABASES = {
         'USER': 'root',
         'Password' : '',
         'HOST': '127.0.0.1',
-        'PORT' : '3306'
+        'PORT' : '3306',
+        'OPTIONS': {
+            
+        },  
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

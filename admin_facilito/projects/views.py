@@ -32,6 +32,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect
 import json
+
+from common import EPermission
+from django.db import transaction
+
 """
 Class
 """
@@ -46,11 +50,16 @@ class CreateClass(CreateView, LoginRequiredMixin):
 	model = Project
 	form_class = CreateProjectForm
 
+	@transaction.atomic
+	def create_objects(self):
+		self.object.save()
+		self.object.projectstatus_set.create(status = Status.dafault_value() )
+		self.object.projectuser_set.create(user = self.request.user, permission_id = EPermission.maker )
+
 	def form_valid(self, form):
 		self.object = form.save(commit = False)
 		self.object.user = self.request.user
-		self.object.save()
-		self.object.projectstatus_set.create(status = Status.dafault_value() )
+		self.create_objects()		
 		return HttpResponseRedirect( self.project_show() ) 
 
 	def project_show(self):
@@ -61,7 +70,12 @@ class ListClass(ListView, LoginRequiredMixin):
 	template_name = 'project/own.html'
 
 	def get_queryset(self):
-		return Project.objects.filter(user=self.request.user).order_by('dead_line')
+		return ProjectUser.objects.filter(user=self.request.user, permission = EPermission.maker)
+
+	def get_context_data(self, *args, **kwargs):
+		context = super(ListClass, self).get_context_data(*args, **kwargs)
+		context['projects_colaborations'] = ProjectUser.objects.filter(user = self.request.user)
+		return context 
 	
 class EditClass(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
 	login_url = 'client:login'
@@ -83,7 +97,7 @@ class EditClass(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
 	def prepare_fake_url(self):
 		return reverse_lazy('project:show', kwargs={'slug': self.object.slug})
 
-class AddCollaborationClass(TemplateView):
+class AddCollaborationClass(TemplateView, LoginRequiredMixin):
 	def validate_unique_user(self):
 		return ProjectUser.objects.filter(user = self.user).count() == 0
 
@@ -96,9 +110,6 @@ class AddCollaborationClass(TemplateView):
 		else:
 			self.is_valid = False
 
-		print "Eduardo Ismael"
-		print self.is_valid
-		
 	def create_instance(self):
 		self.user = get_object_or_none(User, username = self.username)	
 		self.project = get_object_or_none(Project, slug = self.slug)

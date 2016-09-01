@@ -1,0 +1,18 @@
+[
+  {
+    "model": "projects.PermissionProject",
+    "pk": 1,
+    "fields": {
+      "title": "John",
+      "description": "Lennon"
+    }
+  },
+  {
+    "model": "projects.person",
+    "pk": 2,
+    "fields": {
+      "title": "Paul",
+      "description": "McCartney"
+    }
+  }
+]
