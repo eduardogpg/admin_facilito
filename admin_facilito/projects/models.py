@@ -43,7 +43,6 @@ class ProjectStatus(models.Model):
 	def __str__(self):
 		return "{} - {}".format(self.project.title, self.status.title)
 
-
 class PermissionProject(models.Model):
 	title = models.CharField(max_length=50)
 	description = models.TextField()

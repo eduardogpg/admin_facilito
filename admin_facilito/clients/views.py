@@ -27,6 +27,7 @@ from django.views.generic import DetailView
 from django.views.generic import CreateView
 from django.views.generic.edit import UpdateView
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -39,6 +40,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+
 
 import json
 
@@ -155,18 +157,17 @@ def reset_password(request):
 	return render(request,'client/reset_password.html',{})
 
 @csrf_exempt
+@require_http_methods(["POST"])
 def search(request):
-	if request.method == 'POST':
-		val_user = request.POST.get('user')
-		users = User.objects.filter(username__startswith=val_user).order_by('username').values('id', 'username')
-		data = json.dumps(list(users))
-		
-		return HttpResponse(
-			data,
-			content_type="application/json"
-		)
-	else:
-		return HttpResponse("Ninguna vista disponible!")
+	val_user = request.POST.get('user')
+	users = User.objects.filter(username__startswith=val_user).order_by('username').values('id', 'username')
+	data = json.dumps(list(users))
+	
+	return HttpResponse(
+		data,
+		content_type="application/json"
+	)
+
 
 
 def client_instance(user):

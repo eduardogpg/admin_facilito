@@ -8,7 +8,7 @@
 {% endblock %} 
 	
 {% block content %} 
-	<a href="{% url 'project:add_user'%}">Nuevo Colocaborador</a>
+	<a href="{% url 'project:collaboration' project.slug %}">Colaboradores</a>
 
 	<div class = "class_container_form" >
 		<form method="post" action="">

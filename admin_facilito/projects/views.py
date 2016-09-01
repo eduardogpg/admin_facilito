@@ -106,3 +106,12 @@ def edit(request, slug = ''):
 def add_user(request):
 	return render(request, 'project/add_user.html', {})
 
+@login_required( login_url = 'client:login' )
+def collaboration(request, slug = ''):
+	project = get_object_or_404(Project, slug=slug)
+	context = {
+		'project' : project
+	}
+	return render(request, 'project/collaboration.html', context)
+	
+

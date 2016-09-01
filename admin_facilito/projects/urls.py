@@ -6,6 +6,7 @@ from .views import ShowClass
 from .views import EditClass
 from .views import edit
 from .views import add_user
+from .views import collaboration
 
 
 app_name = 'project'
@@ -16,4 +17,5 @@ urlpatterns = [
     url(r'^my/projects$', ListClass.as_view(), name = 'own'),
     url(r'^edit/(?P<slug>[\w-]+)/$', edit, name = 'edit'),
     url(r'^add/user/$', add_user, name = 'add_user'),
+    url(r'^(?P<slug>[\w-]+)/collaboration/$', collaboration, name = 'collaboration'),
    ]

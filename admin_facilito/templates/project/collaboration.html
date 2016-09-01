@@ -1,0 +1,35 @@
+{% extends 'client/bases/base_client.html'%}
+
+{% block title %} Colaboradores {% endblock %} 
+
+{% block scripts %}
+  {% load staticfiles %}
+   <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}" /> 
+   <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+{% endblock %} 
+
+{% block content %} 
+	
+  {% for user in project.projectuser_set.all %}
+    <p> {{ user.username }} </p>
+  {% endfor %}
+
+  <form method="post" action="." id="search-user-form">
+    {% csrf_token %}
+    <div center class="input-field">
+      <input id="search-user" type="search" required placeholder="Buscar usuario">
+      <label for="search"></label>
+    </div>
+  </form>
+
+  <div id="search-result">
+    <ul>
+     
+    </ul>
+  </div>
+
+{% endblock %} 
+
+{% block footer %} 
+
+{% endblock %} 
